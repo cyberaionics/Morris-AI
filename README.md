@@ -87,55 +87,32 @@ Below is the full list of tasks you can ask the agent to perform, grouped by cat
 
 ```mermaid
 graph TB
-    subgraph FastAPI["FastAPI Server"]
-        A2A["A2A JSON-RPC -- POST /"]
-        Upload["/upload-resume -- PDF + job_role"]
-        Metrics["/hr-metrics"]
-        Health["/health"]
-        AgentCard["/agent-card"]
+    A2A["A2A JSON-RPC\nPOST /"] --> Agent
+    Upload["/upload-resume\nPDF + job_role"] --> Agent
+    Metrics["/hr-metrics"]
+    Health["/health & /agent-card"]
+
+    subgraph Agent["Main HR Agent -- LangGraph ReAct -- GPT-4o"]
+        direction TB
+        Planner["Autonomous Planner"] --> ToolRouter["Tool Router"]
     end
 
-    subgraph MainAgent["Main HR Agent -- LangGraph ReAct -- GPT-4o"]
-        Planner["Autonomous Planner"]
-        ToolRouter["Tool Router"]
-    end
+    ToolRouter --> Recruitment["Recruitment Tools\nresume_parser, job_parser\ncandidate_matcher, list_resumes"]
+    ToolRouter --> HRops["HR Operations Tools\nschedule_interview, send_email\nonboarding, leave_manager"]
+    ToolRouter --> KBTools["Knowledge Tools\npolicy_search, generate_document\ncheck_leave_balance"]
+    ToolRouter --> VerifyTool["verify_candidate_links"]
 
-    subgraph Tools["13 HR Tools"]
-        T1["resume_parser"]
-        T2["job_description_parser"]
-        T3["candidate_matcher"]
-        T4["schedule_interview"]
-        T5["send_email"]
-        T6["update_onboarding"]
-        T7["get_onboarding_status"]
-        T8["leave_manager"]
-        T9["check_leave_balance"]
-        T10["policy_search"]
-        T11["generate_document"]
-        T12["verify_candidate_links"]
-        T13["list_sample_resumes"]
-    end
+    VerifyTool --> VerifAgent
 
     subgraph VerifAgent["Verification Sub-Agent"]
-        Crawler["URL Crawler -- aiohttp"]
-        HtmlParser["HTML Parser -- BeautifulSoup"]
-        LLMVerify["LLM Verifier -- GPT-4o"]
-        Crawler --> HtmlParser --> LLMVerify
+        direction LR
+        Crawler["URL Crawler\naiohttp"] --> HtmlParser["HTML Parser\nBeautifulSoup"] --> LLMVerify["LLM Verifier\nGPT-4o"]
     end
 
-    subgraph DataStores["Data Layer"]
-        DB["In-Memory Database"]
-        KB["HR Knowledge Base -- 7 Policies"]
-    end
-
-    A2A --> Planner
-    Upload --> MainAgent
-    Planner --> ToolRouter
-    ToolRouter --> Tools
-    T12 --> VerifAgent
-    Tools --> DB
-    T10 --> KB
+    Recruitment --> DB["In-Memory Database\nCandidates, Leave, Onboarding\nInterviews, PDFs, Metrics"]
+    HRops --> DB
     LLMVerify --> DB
+    KBTools --> KB["HR Knowledge Base\n7 Policies"]
 ```
 
 ### Agent Details
@@ -378,3 +355,4 @@ universal_hr_agent/
 ## 📜 License
 
 This project is developed for the Nasiko AI platform.
+
