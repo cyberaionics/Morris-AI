@@ -87,8 +87,8 @@ Below is the full list of tasks you can ask the agent to perform, grouped by cat
 
 ```mermaid
 graph TB
-    A2A["A2A JSON-RPC\nPOST /"] --> Agent
-    Upload["/upload-resume\nPDF + job_role"] --> Agent
+    A2A["A2A JSON-RPC\nPOST /"] 
+    Upload["/upload-resume\nPDF + job_role"]
     Metrics["/hr-metrics"]
     Health["/health & /agent-card"]
 
