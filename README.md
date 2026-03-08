@@ -303,6 +303,141 @@ docker-compose up --build -d
 # Check logs
 docker-compose logs -f
 ```
+### Some Examples
+```bash
+# Health check
+curl -s http://localhost:5000/health | python3 -m json.tool
+
+# Agent card (capabilities)
+curl -s http://localhost:5000/agent-card | python3 -m json.tool
+
+# HR metrics dashboard
+curl -s http://localhost:5000/hr-metrics | python3 -m json.tool
+```
+```bash
+# Upload your resume with a specific job role
+curl -s -X POST http://localhost:5000/upload-resume \
+  -F "file=@Resume.pdf" \
+  -F "job_role=Senior AI Engineer with Python, LangChain, and OpenAI experience" \
+  | python3 -m json.tool
+```
+```bash
+# List all available candidates
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"List all available candidate resumes"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Resume Parsing (from text)
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"2","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Parse this resume: John Doe, john@email.com, 4 years as a Data Scientist. Skills: Python, ML, TensorFlow, SQL. Education: M.S. Data Science, MIT. Worked at Netflix as ML Engineer (2 yrs) and IBM as Data Analyst (2 yrs). GitHub: https://github.com/johndoe"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Job Description Parsing
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"3","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Parse this job description: Senior AI Engineer with Python, LangChain, and OpenAI experience"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Job Matching
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"4","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Match this candidate to this job description: Senior AI Engineer with Python, LangChain, and OpenAI experience"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Full Recruitment Pipeline
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"5","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"We need a Marketing Manager with SEO and Google Analytics experience. List all candidates, match them, and schedule an interview with the best match."}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Interview Scheduling
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"6","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Schedule an interview for alice.chen@email.com with interviewer hr@company.com"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Email Communication
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"7","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Send an email to brian.torres@email.com with subject Interview Invitation and body: Dear Brian, you have been shortlisted for the Investment Analyst role. Your interview is Monday at 2 PM. Please confirm."}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Onboarding
+# Check onboarding status
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"8","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Show onboarding status for new employee Rahul Kumar"}]}}}' \
+  | python3 -m json.tool
+# Complete a specific task
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"9","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Mark Identity Verification as completed for Rahul Kumar"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Leave Management
+# Check leave balance
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"10","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"What is the leave balance for Derek Patel?"}]}}}' \
+  | python3 -m json.tool
+
+# Request leave (will approve — he has 9 days left)
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"11","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Process a leave request for Derek Patel for 3 days"}]}}}' \
+  | python3 -m json.tool
+
+# Request too much leave (will reject)
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"12","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Process a leave request for Derek Patel for 15 days"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# HR Policy Helpdesk
+# Maternity leave policy
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"13","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"What is the maternity leave policy?"}]}}}' \
+  | python3 -m json.tool
+
+# Remote work policy
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"14","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"How many days can I work from home?"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Offer letter
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"15","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Generate an offer letter for Alice Chen"}]}}}' \
+  | python3 -m json.tool
+
+# Experience letter
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"16","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Generate an experience letter for Elena Kowalski"}]}}}' \
+  | python3 -m json.tool
+```
+```bash
+# Resume Link Verification
+curl -s -X POST http://localhost:5000/ \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"17","method":"message/send","params":{"message":{"role":"user","parts":[{"type":"text","text":"Verify links in resume for employee Rahul Kumar"}]}}}' \
+  | python3 -m json.tool
+```
+
 
 ### Environment Variables
 | Variable | Description |
