@@ -88,33 +88,30 @@ Below is the full list of tasks you can ask the agent to perform, grouped by cat
 ```mermaid
 graph TB
     subgraph Flow["Flow"]
-    A2A["A2A JSON-RPC\nPOST /"] 
-    Upload["/upload-resume\nPDF + job_role"]
-    Metrics["/hr-metrics"]
-    Health["/health & /agent-card"]
+    A2A["A2A JSON-RPC POST"] --> Upload["Upload Resume PDF + Job Role"] --> Metrics["HR-Metrics"] --> Health["Health & Agent Card"]
     end
 
-    subgraph Agent["Main HR Agent --> LangGraph ReAct --> GPT-4o"]
+    subgraph Agent["Main HR Agent --> LangGraph ReAct / GPT-4o"]
         direction TB
         Planner["Autonomous Planner"] --> ToolRouter["Tool Router"]
     end
 
-    ToolRouter --> Recruitment["Recruitment Tools\n resume_parser, job_parser\n candidate_matcher, list_resumes"]
-    ToolRouter --> HRops["HR Operations Tools\n schedule_interview, send_email\n onboarding, leave_manager"]
-    ToolRouter --> KBTools["Knowledge Tools\n policy_search, generate_document\n check_leave_balance"]
-    ToolRouter --> VerifyTool["verify_candidate_links"]
+    ToolRouter --> Recruitment["Recruitment Tools --> resume parser, job parser, candidate matcher, list resumes"]
+    ToolRouter --> HRops["HR Operations Tools --> schedule_interview, send email onboarding, leave manager"]
+    ToolRouter --> KBTools["Knowledge Tools --> policy search, generate document, check leave balance"]
+    ToolRouter --> VerifyTool["verify candidate links"]
 
     VerifyTool --> VerifAgent
 
     subgraph VerifAgent["Verification Sub-Agent"]
         direction LR
-        Crawler["URL Crawler\n aiohttp"] --> HtmlParser["HTML Parser\n BeautifulSoup"] --> LLMVerify["LLM Verifier\n GPT-4o"]
+        Crawler["URL Crawler -> aiohttp"] --> HtmlParser["HTML Parser -> BeautifulSoup"] --> LLMVerify["LLM Verifier -> GPT-4o"]
     end
 
     Recruitment --> DB["In-Memory Database\n Candidates, Leave, Onboarding\n Interviews, PDFs, Metrics"]
     HRops --> DB
     LLMVerify --> DB
-    KBTools --> KB["HR Knowledge Base\n 7 Policies"]
+    KBTools --> KB["HR Knowledge Base -> 7 Policies"]
 ```
 
 ### Agent Details
