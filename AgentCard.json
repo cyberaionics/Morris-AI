@@ -1,0 +1,59 @@
+{
+  "name": "Universal HR Autonomous Agent",
+  "description": "An industry-agnostic AI HR operations agent capable of automating recruitment screening, candidate evaluation, interview scheduling, onboarding management, leave processing, HR policy assistance, document generation, and resume link verification.",
+  "url": "http://localhost:5000",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "skills": [
+    {
+      "id": "resume_parsing",
+      "name": "Resume Parsing",
+      "description": "Parse resumes from text or PDF to extract structured candidate data"
+    },
+    {
+      "id": "job_matching",
+      "name": "Job Matching",
+      "description": "Match candidates to job descriptions with scored reasoning"
+    },
+    {
+      "id": "interview_scheduling",
+      "name": "Interview Scheduling",
+      "description": "Schedule and manage candidate interviews"
+    },
+    {
+      "id": "onboarding",
+      "name": "Onboarding Management",
+      "description": "Track and manage employee onboarding checklists"
+    },
+    {
+      "id": "leave_management",
+      "name": "Leave Management",
+      "description": "Process leave requests and check balances"
+    },
+    {
+      "id": "policy_helpdesk",
+      "name": "HR Policy Helpdesk",
+      "description": "Answer questions about HR policies"
+    },
+    {
+      "id": "document_generation",
+      "name": "HR Document Generation",
+      "description": "Generate offer letters, confirmations, and other HR documents"
+    },
+    {
+      "id": "link_verification",
+      "name": "Resume Link Verification",
+      "description": "Crawl and verify links in resumes for project and certification authenticity"
+    }
+  ],
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"],
+  "provider": {
+    "organization": "Nasiko AI",
+    "url": "https://nasiko.ai"
+  },
+  "protocolVersion": "0.1"
+}
